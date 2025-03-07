@@ -3,6 +3,9 @@ name = "omega-learning-tasks"
 version = "0.1.0"
 edition = "2024"
 
+[package.metadata.release]
+release = false
+
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]

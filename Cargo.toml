@@ -4,7 +4,7 @@ resolver = "3"
 
 members = ["crates/*", "bin/*"]
 default-members = ["crates/automata", "crates/automata-*", "crates/hoars", "bin/*"]
-exclude = ["python", "bench"]
+exclude = ["python", "bench", "bin/*"]
 
 [workspace.dependencies]
 tracing = "0.1"

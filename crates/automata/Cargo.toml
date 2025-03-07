@@ -1,6 +1,6 @@
 [package]
 name = "automata"
-version = "0.0.4"
+version = "0.1.0"
 readme = "README.md"
 description = "A library for transition systems and automata over (in)finite words."
 repository = "https://github.com/leonbohn/automata"
