@@ -24,7 +24,7 @@ biodivine-lib-bdd = { workspace = true }
 itertools = { workspace = true }
 
 ariadne = "0.5"
-chumsky = { version = "0.9.3", default-features = false, features = [
+chumsky = { version = "0.10.0", default-features = false, features = [
     "ahash",
     "std",
 ] }
