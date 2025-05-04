@@ -214,10 +214,6 @@ impl TryFrom<DeterministicOmegaAutomaton<CharAlphabet>>
         }
 
         assert!(value.initial().into_usize() < size);
-        Ok(Self::new(
-            ts,
-            value.initial,
-            value.acceptance,
-        ))
+        Ok(Self::new(ts, value.initial, value.acceptance))
     }
 }

@@ -113,10 +113,7 @@ where
     /// dfa.add_edge((0, 'b', 0));
     /// assert!(!dfa.accepts("bbabababbabbba"));
     /// ```
-    pub fn new_with_initial_color(
-        alphabet: A,
-        initial_color: Q,
-    ) -> Self
+    pub fn new_with_initial_color(alphabet: A, initial_color: Q) -> Self
     where
         D: ForAlphabet<A> + Sproutable,
         Z: Default,
@@ -129,11 +126,7 @@ where
     /// Uses `Self::new_with_initial_color` to create a new instance of
     /// `Self` and then makes all transitions self-loops emitting the given
     /// color.
-    pub fn new_trivial_with_initial_color(
-        alphabet: A,
-        initial_color: Q,
-        edge_color: C,
-    ) -> Self
+    pub fn new_trivial_with_initial_color(alphabet: A, initial_color: Q, edge_color: C) -> Self
     where
         D: ForAlphabet<A> + Sproutable,
         Z: Default,
@@ -276,8 +269,7 @@ where
     }
 }
 
-impl<A, Z, Q, C, D, const OMEGA: bool> AsRef<Self>
-    for Automaton<A, Z, Q, C, D, OMEGA>
+impl<A, Z, Q, C, D, const OMEGA: bool> AsRef<Self> for Automaton<A, Z, Q, C, D, OMEGA>
 where
     A: Alphabet,
     D: TransitionSystem<Alphabet = A, StateColor = Q, EdgeColor = C>,

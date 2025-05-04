@@ -216,17 +216,16 @@ pub trait Dottable: TransitionSystem {
             .arg(tempfile_name)
             .spawn()?;
         if !child.wait()?.success() {
-            Err(std::io::Error::other(
-                child
-                    .stdout
-                    .map_or("Error in dot...".to_string(), |mut err| {
-                        let mut buf = String::new();
-                        if let Err(e) = err.read_to_string(&mut buf) {
-                            buf = format!("Could not read from stdout: {e}");
-                        }
-                        buf
-                    }),
-            ))
+            Err(std::io::Error::other(child.stdout.map_or(
+                "Error in dot...".to_string(),
+                |mut err| {
+                    let mut buf = String::new();
+                    if let Err(e) = err.read_to_string(&mut buf) {
+                        buf = format!("Could not read from stdout: {e}");
+                    }
+                    buf
+                },
+            )))
         } else {
             Ok(())
         }

@@ -236,10 +236,7 @@ impl TryFrom<&hoars::Header> for OmegaAcceptanceCondition {
 
         match value.acceptance_name() {
             hoars::AcceptanceName::Buchi => Ok(Self::Buchi),
-            hoars::AcceptanceName::Parity => Ok(Self::Parity(
-                0,
-                acceptance_sets.unwrap() as Int,
-            )),
+            hoars::AcceptanceName::Parity => Ok(Self::Parity(0, acceptance_sets.unwrap() as Int)),
             _ => Err("Unsupported acceptance condition".to_string()),
         }
     }
