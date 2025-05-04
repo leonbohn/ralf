@@ -59,7 +59,7 @@ impl OmegaAcceptanceCondition {
     /// [`AcceptanceMask`]s.
     pub fn satisfied(&self, infset: &OrderedSet<AcceptanceMask>) -> bool {
         match self {
-            OmegaAcceptanceCondition::Parity(_low, _high) => infset
+            Self::Parity(_low, _high) => infset
                 .iter()
                 .map(|x| x.as_priority())
                 .min()
@@ -77,7 +77,7 @@ impl<A: Alphabet, const DET: bool> OmegaAutomaton<A, DET> {
         ts: TS<A, Int, AcceptanceMask, DET>,
         initial: DefaultIdType,
         acceptance: OmegaAcceptanceCondition,
-    ) -> OmegaAutomaton<A, DET> {
+    ) -> Self {
         OmegaAutomaton {
             ts,
             initial,
@@ -179,7 +179,7 @@ impl From<DeterministicOmegaAutomaton<PropAlphabet>> for DeterministicOmegaAutom
                 })
             }))
             .into_dts();
-        DeterministicOmegaAutomaton::new(ts, value.initial, value.acceptance)
+        Self::new(ts, value.initial, value.acceptance)
     }
 }
 
@@ -214,10 +214,6 @@ impl TryFrom<DeterministicOmegaAutomaton<CharAlphabet>>
         }
 
         assert!(value.initial().into_usize() < size);
-        Ok(DeterministicOmegaAutomaton::new(
-            ts,
-            value.initial,
-            value.acceptance,
-        ))
+        Ok(Self::new(ts, value.initial, value.acceptance))
     }
 }

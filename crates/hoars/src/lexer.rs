@@ -22,19 +22,19 @@ pub enum Token {
 impl std::fmt::Display for Token {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            Token::Bool(b) => write!(f, "{}", b),
-            Token::Int(n) => write!(f, "{}", n),
-            Token::Text(txt) => write!(f, "{}", txt),
-            Token::Identifier(id) => write!(f, "{}", id),
-            Token::Alias(alias) => write!(f, "@{}", alias),
-            Token::Header(hdr) => write!(f, "{}:", hdr),
-            Token::Op(o) => write!(f, "{}", o),
-            Token::Paren(c) => write!(f, "{}", c),
-            Token::Fin => write!(f, "Fin"),
-            Token::Inf => write!(f, "Inf"),
-            Token::BodyEnd => write!(f, "--END--"),
-            Token::BodyStart => write!(f, "--BODY--"),
-            Token::Abort => write!(f, "--ABORT--"),
+            Self::Bool(b) => write!(f, "{}", b),
+            Self::Int(n) => write!(f, "{}", n),
+            Self::Text(txt) => write!(f, "{}", txt),
+            Self::Identifier(id) => write!(f, "{}", id),
+            Self::Alias(alias) => write!(f, "@{}", alias),
+            Self::Header(hdr) => write!(f, "{}:", hdr),
+            Self::Op(o) => write!(f, "{}", o),
+            Self::Paren(c) => write!(f, "{}", c),
+            Self::Fin => write!(f, "Fin"),
+            Self::Inf => write!(f, "Inf"),
+            Self::BodyEnd => write!(f, "--END--"),
+            Self::BodyStart => write!(f, "--BODY--"),
+            Self::Abort => write!(f, "--ABORT--"),
         }
     }
 }

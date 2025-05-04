@@ -755,7 +755,7 @@ pub trait IntoEdgeTuple<Ts: TransitionSystem> {
 
 impl<T: TransitionSystem> IntoEdgeTuple<T> for EdgeTuple<T> {
     #[inline(always)]
-    fn into_edge_tuple(self) -> EdgeTuple<T> {
+    fn into_edge_tuple(self) -> Self {
         self
     }
 }

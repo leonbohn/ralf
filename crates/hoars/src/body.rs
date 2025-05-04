@@ -116,7 +116,7 @@ impl From<(Option<AcceptanceSignature>, ExplicitEdge)> for Edge {
                 AcceptanceSignature(left.iter().cloned().chain(right.iter().cloned()).collect())
             }
         };
-        Edge(edge.0, edge.1, acc)
+        Self(edge.0, edge.1, acc)
     }
 }
 
@@ -135,7 +135,7 @@ impl TryFrom<(RawState, Vec<ExplicitEdge>)> for State {
             out_edges.push(Edge::from((state_acc.clone(), raw_edge)));
         }
 
-        Ok(State(id, state_text, out_edges))
+        Ok(Self(id, state_text, out_edges))
     }
 }
 
@@ -209,7 +209,7 @@ impl Body {
 
 impl From<Vec<State>> for Body {
     fn from(value: Vec<State>) -> Self {
-        Body(value)
+        Self(value)
     }
 }
 

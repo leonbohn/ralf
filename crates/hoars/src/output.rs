@@ -21,29 +21,29 @@ pub fn to_hoa(aut: &HoaRepresentation) -> String {
 impl Display for HeaderItem {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            HeaderItem::Version(version) => write!(f, "HOA: {}", version),
-            HeaderItem::States(number) => write!(f, "States: {}", number),
-            HeaderItem::Start(state_conj) => write!(f, "Start: {}", state_conj),
-            HeaderItem::AP(aps) => write!(
+            Self::Version(version) => write!(f, "HOA: {}", version),
+            Self::States(number) => write!(f, "States: {}", number),
+            Self::Start(state_conj) => write!(f, "Start: {}", state_conj),
+            Self::AP(aps) => write!(
                 f,
                 "AP: {} {}",
                 aps.len(),
                 aps.iter().map(|ap| format!("\"{}\"", ap)).join(" ")
             ),
-            HeaderItem::Alias(alias_name, alias_expression) => {
+            Self::Alias(alias_name, alias_expression) => {
                 write!(f, "Alias: {} {}", alias_name, alias_expression)
             }
-            HeaderItem::Acceptance(number_sets, condition) => {
+            Self::Acceptance(number_sets, condition) => {
                 write!(f, "Acceptance: {} {}", number_sets, condition)
             }
-            HeaderItem::AcceptanceName(identifier, vec_info) => {
+            Self::AcceptanceName(identifier, vec_info) => {
                 write!(f, "acc-name: {} {}", identifier, vec_info.iter().join(" "))
             }
-            HeaderItem::Tool(name, options) => {
+            Self::Tool(name, options) => {
                 write!(f, "tool: {} {}", name, options.iter().join(" "))
             }
-            HeaderItem::Name(name) => write!(f, "name: {}", name),
-            HeaderItem::Properties(properties) => {
+            Self::Name(name) => write!(f, "name: {}", name),
+            Self::Properties(properties) => {
                 write!(f, "properties: {}", properties.iter().join(" "))
             }
         }
@@ -53,8 +53,8 @@ impl Display for HeaderItem {
 impl Display for AcceptanceInfo {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            AcceptanceInfo::Int(integer) => write!(f, "{}", integer),
-            AcceptanceInfo::Identifier(identifier) => write!(f, "{}", identifier),
+            Self::Int(integer) => write!(f, "{}", integer),
+            Self::Identifier(identifier) => write!(f, "{}", identifier),
         }
     }
 }
@@ -65,24 +65,24 @@ impl Display for Property {
             f,
             "{}",
             match self {
-                Property::StateLabels => "state-labels",
-                Property::TransLabels => "trans-labels",
-                Property::ImplicitLabels => "implicit-labels",
-                Property::ExplicitLabels => "explicit-labels",
-                Property::StateAcceptance => "state-acc",
-                Property::TransitionAcceptance => "trans-acc",
-                Property::UniversalBranching => "univ-branch",
-                Property::NoUniversalBranching => "no-univ-branch",
-                Property::Deterministic => "deterministic",
-                Property::Complete => "complete",
-                Property::Unambiguous => "unabmiguous",
-                Property::StutterInvariant => "stutter-invariant",
-                Property::Weak => "weak",
-                Property::VeryWeak => "very-weak",
-                Property::InherentlyWeak => "inherently-weak",
-                Property::Terminal => "terminal",
-                Property::Tight => "tight",
-                Property::Colored => "colored",
+                Self::StateLabels => "state-labels",
+                Self::TransLabels => "trans-labels",
+                Self::ImplicitLabels => "implicit-labels",
+                Self::ExplicitLabels => "explicit-labels",
+                Self::StateAcceptance => "state-acc",
+                Self::TransitionAcceptance => "trans-acc",
+                Self::UniversalBranching => "univ-branch",
+                Self::NoUniversalBranching => "no-univ-branch",
+                Self::Deterministic => "deterministic",
+                Self::Complete => "complete",
+                Self::Unambiguous => "unabmiguous",
+                Self::StutterInvariant => "stutter-invariant",
+                Self::Weak => "weak",
+                Self::VeryWeak => "very-weak",
+                Self::InherentlyWeak => "inherently-weak",
+                Self::Terminal => "terminal",
+                Self::Tight => "tight",
+                Self::Colored => "colored",
             }
         )
     }
@@ -94,16 +94,16 @@ impl Display for AcceptanceName {
             f,
             "{}",
             match self {
-                AcceptanceName::Buchi => "Buchi",
-                AcceptanceName::GeneralizedBuchi => "generalized-Buchi",
-                AcceptanceName::CoBuchi => "co-Buchi",
-                AcceptanceName::GeneralizedCoBuchi => "generalized-co-Buchi",
-                AcceptanceName::Streett => "Streett",
-                AcceptanceName::Rabin => "Rabin",
-                AcceptanceName::GeneralizedRabin => "generalized-Rabin",
-                AcceptanceName::Parity => "parity",
-                AcceptanceName::All => "all",
-                AcceptanceName::None => "none",
+                Self::Buchi => "Buchi",
+                Self::GeneralizedBuchi => "generalized-Buchi",
+                Self::CoBuchi => "co-Buchi",
+                Self::GeneralizedCoBuchi => "generalized-co-Buchi",
+                Self::Streett => "Streett",
+                Self::Rabin => "Rabin",
+                Self::GeneralizedRabin => "generalized-Rabin",
+                Self::Parity => "parity",
+                Self::All => "all",
+                Self::None => "none",
             }
         )
     }
@@ -112,8 +112,8 @@ impl Display for AcceptanceName {
 impl Display for AcceptanceAtom {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            AcceptanceAtom::Positive(id) => write!(f, "{}", id),
-            AcceptanceAtom::Negative(id) => write!(f, "!{}", id),
+            Self::Positive(id) => write!(f, "{}", id),
+            Self::Negative(id) => write!(f, "!{}", id),
         }
     }
 }
@@ -127,11 +127,11 @@ impl Display for HoaBool {
 impl Display for AcceptanceCondition {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            AcceptanceCondition::Fin(id) => write!(f, "Fin({})", id),
-            AcceptanceCondition::Inf(id) => write!(f, "Inf({})", id),
-            AcceptanceCondition::And(left, right) => write!(f, "({} & {})", left, right),
-            AcceptanceCondition::Or(left, right) => write!(f, "({} | {})", left, right),
-            AcceptanceCondition::Boolean(val) => write!(f, "{}", val),
+            Self::Fin(id) => write!(f, "Fin({})", id),
+            Self::Inf(id) => write!(f, "Inf({})", id),
+            Self::And(left, right) => write!(f, "({} & {})", left, right),
+            Self::Or(left, right) => write!(f, "({} | {})", left, right),
+            Self::Boolean(val) => write!(f, "{}", val),
         }
     }
 }

@@ -80,7 +80,7 @@ pub trait WriteHoa: TransitionSystem + Pointed {
 impl OmegaAcceptanceCondition {
     pub fn write_hoa<W: Write>(&self, w: &mut W) -> Result {
         match self {
-            OmegaAcceptanceCondition::Parity(low, high) => {
+            Self::Parity(low, high) => {
                 let zero_based_range = high - low + (low % 2);
                 write!(
                     w,
@@ -90,7 +90,7 @@ impl OmegaAcceptanceCondition {
                     build_parity_condition_hoa(*low, *high)
                 )
             }
-            OmegaAcceptanceCondition::Buchi => {
+            Self::Buchi => {
                 write!(w, "acc-name: Buchi\nAcceptance: 1 Inf(0)\n")
             }
             _ => todo!("Can not yet deal with other acceptance types"),

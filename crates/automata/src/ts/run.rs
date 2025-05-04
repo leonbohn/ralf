@@ -132,7 +132,7 @@ impl<T: Deterministic, W: Word<Symbol = SymbolOf<T>>, const FINITE: bool, O: Obs
 impl<'ts, T: Deterministic, W: FiniteWord<Symbol = SymbolOf<T>>, O: Observer<T>>
     Run<'ts, T, W, true, O>
 {
-    pub fn new_finite(ts: &'ts T, start: StateIndex<T>, word: W) -> Run<'ts, T, W, true, O> {
+    pub fn new_finite(ts: &'ts T, start: StateIndex<T>, word: W) -> Self {
         Run {
             ts,
             start,
@@ -163,7 +163,7 @@ impl<'ts, T: Deterministic, W: FiniteWord<Symbol = SymbolOf<T>>, O: Observer<T>>
 impl<'ts, T: Deterministic, W: OmegaWord<Symbol = SymbolOf<T>>, O: InfiniteObserver<T>>
     Run<'ts, T, W, false, O>
 {
-    pub fn new_infinite(ts: &'ts T, start: StateIndex<T>, word: W) -> Run<'ts, T, W, false, O> {
+    pub fn new_infinite(ts: &'ts T, start: StateIndex<T>, word: W) -> Self {
         Run {
             ts,
             start,
@@ -359,27 +359,27 @@ impl<T: TransitionSystem, W: Word<Symbol = SymbolOf<T>>, O: Observer<T>> FiniteR
     #[allow(unused)]
     fn escape_state(&self) -> Option<StateIndex<T>> {
         match self {
-            FiniteRunOutput::Reached(_, _) => None,
-            FiniteRunOutput::Failed(state, _) => Some(*state),
+            Self::Reached(_, _) => None,
+            Self::Failed(state, _) => Some(*state),
         }
     }
     /// Returns the [`EscapePrefix`] with which the ts is left.
     #[allow(unused)]
     fn escape_prefix(&self) -> Option<&EscapePrefix<W>> {
         match self {
-            FiniteRunOutput::Reached(_, _) => None,
-            FiniteRunOutput::Failed(_state, ep) => Some(ep),
+            Self::Reached(_, _) => None,
+            Self::Failed(_state, ep) => Some(ep),
         }
     }
     pub fn into_reached_state(self) -> Option<StateIndex<T>> {
         match self {
-            FiniteRunOutput::Reached(r, _) => Some(r),
+            Self::Reached(r, _) => Some(r),
             _ => None,
         }
     }
     pub fn into_output(self) -> Option<O::Current> {
         match self {
-            FiniteRunOutput::Reached(_, o) => Some(o),
+            Self::Reached(_, o) => Some(o),
             _ => None,
         }
     }
@@ -402,10 +402,10 @@ where
 {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            InfiniteRunOutput::Failed(q, esc) => {
+            Self::Failed(q, esc) => {
                 write!(f, "failed from {q:?} with escape prefix {esc:?}")
             }
-            InfiniteRunOutput::Successful(ind) => write!(f, "successfully induced {ind:?}"),
+            Self::Successful(ind) => write!(f, "successfully induced {ind:?}"),
         }
     }
 }
@@ -415,7 +415,7 @@ impl<T: TransitionSystem, W: OmegaWord<Symbol = SymbolOf<T>>, O: InfiniteObserve
 {
     #[inline(always)]
     pub fn is_successful(&self) -> bool {
-        matches!(self, InfiniteRunOutput::Successful(_))
+        matches!(self, Self::Successful(_))
     }
     #[inline(always)]
     pub fn is_escaping(&self) -> bool {
@@ -460,7 +460,7 @@ mod impls {
         fn into_current(self) -> Self::Current {}
         #[inline(always)]
         fn begin(_ts: &T, _state: StateIndex<T>) -> Self {
-            NoObserver
+            Self
         }
         #[inline(always)]
         fn observe_one(

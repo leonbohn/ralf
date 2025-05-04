@@ -60,19 +60,19 @@ pub enum FromHoaError {
 impl Display for FromHoaError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            FromHoaError::UnsupportedVersion(version) => {
+            Self::UnsupportedVersion(version) => {
                 write!(f, "Unsupported HOA version ({})", version)
             }
-            FromHoaError::UnsupportedAcceptanceCondition => {
+            Self::UnsupportedAcceptanceCondition => {
                 write!(f, "Unsupported acceptance condition")
             }
-            FromHoaError::UnsupportedBody => write!(f, "Unsupported body"),
-            FromHoaError::ParseAcceptanceCondition(message) => {
+            Self::UnsupportedBody => write!(f, "Unsupported body"),
+            Self::ParseAcceptanceCondition(message) => {
                 write!(f, "Could not parse acceptance condition: {}", message)
             }
-            FromHoaError::Abort => write!(f, "Abort token encountered"),
-            FromHoaError::LexerError(rep) => write!(f, "Lexer error: {}", rep),
-            FromHoaError::ParserError(rep) => write!(f, "Parser error: {}", rep),
+            Self::Abort => write!(f, "Abort token encountered"),
+            Self::LexerError(rep) => write!(f, "Lexer error: {}", rep),
+            Self::ParserError(rep) => write!(f, "Parser error: {}", rep),
         }
     }
 }
@@ -132,7 +132,7 @@ impl HoaRepresentation {
         Header::parser()
             .then(Body::parser())
             .then_ignore(end())
-            .map(HoaRepresentation::from_parsed)
+            .map(Self::from_parsed)
     }
 
     /// Creates a new HOA automaton from the given version, header and
@@ -284,7 +284,7 @@ impl HoaRepresentation {
 
 impl Default for HoaRepresentation {
     fn default() -> Self {
-        HoaRepresentation::from_parts(vec![HeaderItem::Version("v1".into())].into(), vec![].into())
+        Self::from_parts(vec![HeaderItem::Version("v1".into())].into(), vec![].into())
     }
 }
 
@@ -299,15 +299,15 @@ impl TryFrom<&str> for HoaRepresentation {
 impl std::fmt::Display for AbstractLabelExpression {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            AbstractLabelExpression::Boolean(b) => match b {
+            Self::Boolean(b) => match b {
                 true => write!(f, "t"),
                 false => write!(f, "f"),
             },
-            AbstractLabelExpression::Integer(i) => write!(f, "{i}"),
-            AbstractLabelExpression::Negated(expr) => {
+            Self::Integer(i) => write!(f, "{i}"),
+            Self::Negated(expr) => {
                 write!(f, "!{}", expr)
             }
-            AbstractLabelExpression::Conjunction(conjuncts) => {
+            Self::Conjunction(conjuncts) => {
                 let mut it = conjuncts.iter();
                 if let Some(first) = it.next() {
                     Display::fmt(first, f)?;
@@ -318,7 +318,7 @@ impl std::fmt::Display for AbstractLabelExpression {
                 }
                 Ok(())
             }
-            AbstractLabelExpression::Disjunction(disjuncts) => {
+            Self::Disjunction(disjuncts) => {
                 let mut it = disjuncts.iter();
                 if let Some(first) = it.next() {
                     Display::fmt(first, f)?;

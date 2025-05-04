@@ -55,7 +55,7 @@ impl AcceptanceSignature {
     /// Tries to get the singleton element of the acceptance signature, if it exists.
     /// Returns `None` if the acceptance signature is not a singleton.
     pub fn get_singleton(&self) -> Option<Option<Id>> {
-        if self.len() == 0 {
+        if self.is_empty() {
             Some(None)
         } else if self.len() == 1 {
             Some(Some(self[0]))
@@ -107,18 +107,18 @@ impl AcceptanceCondition {
     fn parity_rec(current: u32, total: u32) -> Self {
         if current + 1 >= total {
             if current.rem(2) == 0 {
-                AcceptanceCondition::id_inf(current)
+                Self::id_inf(current)
             } else {
-                AcceptanceCondition::id_fin(current)
+                Self::id_fin(current)
             }
         } else if current.rem(2) == 0 {
-            AcceptanceCondition::Or(
-                Box::new(AcceptanceCondition::Inf(AcceptanceAtom::Positive(current))),
+            Self::Or(
+                Box::new(Self::Inf(AcceptanceAtom::Positive(current))),
                 Box::new(Self::parity_rec(current + 1, total)),
             )
         } else {
-            AcceptanceCondition::And(
-                Box::new(AcceptanceCondition::Fin(AcceptanceAtom::Positive(current))),
+            Self::And(
+                Box::new(Self::Fin(AcceptanceAtom::Positive(current))),
                 Box::new(Self::parity_rec(current + 1, total)),
             )
         }
@@ -131,22 +131,22 @@ impl AcceptanceCondition {
 
     /// Creates a Buchi acceptance condition.
     pub fn buchi() -> Self {
-        AcceptanceCondition::Inf(AcceptanceAtom::Positive(0))
+        Self::Inf(AcceptanceAtom::Positive(0))
     }
 
     /// Creates a conjunction of two acceptance conditions.
-    pub fn and<C: Borrow<AcceptanceCondition>>(&self, other: C) -> Self {
-        AcceptanceCondition::And(Box::new(self.clone()), Box::new(other.borrow().clone()))
+    pub fn and<C: Borrow<Self>>(&self, other: C) -> Self {
+        Self::And(Box::new(self.clone()), Box::new(other.borrow().clone()))
     }
 
     /// Creates a disjunction of two acceptance conditions.
-    pub fn or<C: Borrow<AcceptanceCondition>>(&self, other: C) -> Self {
-        AcceptanceCondition::Or(Box::new(self.clone()), Box::new(other.borrow().clone()))
+    pub fn or<C: Borrow<Self>>(&self, other: C) -> Self {
+        Self::Or(Box::new(self.clone()), Box::new(other.borrow().clone()))
     }
 
     /// Creates an acceptance condition containing the given atom.
     pub fn atom<A: Borrow<AcceptanceAtom>>(atom: A) -> Self {
-        AcceptanceCondition::Fin(atom.borrow().clone())
+        Self::Fin(atom.borrow().clone())
     }
 
     /// Creates an acceptance condition consisting of a positive atodm.
@@ -210,7 +210,7 @@ pub enum AcceptanceName {
 
 impl AcceptanceName {
     pub fn is_parity(&self) -> bool {
-        matches!(self, AcceptanceName::Parity)
+        matches!(self, Self::Parity)
     }
 }
 
@@ -219,16 +219,16 @@ impl TryFrom<String> for AcceptanceName {
 
     fn try_from(value: String) -> Result<Self, Self::Error> {
         match value.as_str() {
-            "Buchi" => Ok(AcceptanceName::Buchi),
-            "generalized-Buchi" => Ok(AcceptanceName::GeneralizedBuchi),
-            "co-Buchi" => Ok(AcceptanceName::CoBuchi),
-            "generalized-co-Buchi" => Ok(AcceptanceName::GeneralizedCoBuchi),
-            "Streett" => Ok(AcceptanceName::Streett),
-            "Rabin" => Ok(AcceptanceName::Rabin),
-            "generalized-Rabin" => Ok(AcceptanceName::GeneralizedRabin),
-            "parity" => Ok(AcceptanceName::Parity),
-            "all" => Ok(AcceptanceName::All),
-            "none" => Ok(AcceptanceName::None),
+            "Buchi" => Ok(Self::Buchi),
+            "generalized-Buchi" => Ok(Self::GeneralizedBuchi),
+            "co-Buchi" => Ok(Self::CoBuchi),
+            "generalized-co-Buchi" => Ok(Self::GeneralizedCoBuchi),
+            "Streett" => Ok(Self::Streett),
+            "Rabin" => Ok(Self::Rabin),
+            "generalized-Rabin" => Ok(Self::GeneralizedRabin),
+            "parity" => Ok(Self::Parity),
+            "all" => Ok(Self::All),
+            "none" => Ok(Self::None),
             val => Err(format!("Unknown acceptance type: {}", val)),
         }
     }
@@ -264,24 +264,24 @@ impl TryFrom<String> for Property {
 
     fn try_from(value: String) -> Result<Self, Self::Error> {
         match value.as_str() {
-            "state-labels" => Ok(Property::StateLabels),
-            "trans-labels" => Ok(Property::TransLabels),
-            "implicit-labels" => Ok(Property::ImplicitLabels),
-            "explicit-labels" => Ok(Property::ExplicitLabels),
-            "state-acc" => Ok(Property::StateAcceptance),
-            "trans-acc" => Ok(Property::TransitionAcceptance),
-            "univ-branch" => Ok(Property::UniversalBranching),
-            "no-univ-branch" => Ok(Property::NoUniversalBranching),
-            "deterministic" => Ok(Property::Deterministic),
-            "complete" => Ok(Property::Complete),
-            "unambiguous" => Ok(Property::Unambiguous),
-            "stutter-invariant" => Ok(Property::StutterInvariant),
-            "weak" => Ok(Property::Weak),
-            "very-weak" => Ok(Property::VeryWeak),
-            "inherently-weak" => Ok(Property::InherentlyWeak),
-            "terminatl" => Ok(Property::Terminal),
-            "tight" => Ok(Property::Tight),
-            "colored" => Ok(Property::Colored),
+            "state-labels" => Ok(Self::StateLabels),
+            "trans-labels" => Ok(Self::TransLabels),
+            "implicit-labels" => Ok(Self::ImplicitLabels),
+            "explicit-labels" => Ok(Self::ExplicitLabels),
+            "state-acc" => Ok(Self::StateAcceptance),
+            "trans-acc" => Ok(Self::TransitionAcceptance),
+            "univ-branch" => Ok(Self::UniversalBranching),
+            "no-univ-branch" => Ok(Self::NoUniversalBranching),
+            "deterministic" => Ok(Self::Deterministic),
+            "complete" => Ok(Self::Complete),
+            "unambiguous" => Ok(Self::Unambiguous),
+            "stutter-invariant" => Ok(Self::StutterInvariant),
+            "weak" => Ok(Self::Weak),
+            "very-weak" => Ok(Self::VeryWeak),
+            "inherently-weak" => Ok(Self::InherentlyWeak),
+            "terminatl" => Ok(Self::Terminal),
+            "tight" => Ok(Self::Tight),
+            "colored" => Ok(Self::Colored),
             unknown => Err(format!("{} is not a valid property", unknown)),
         }
     }
@@ -300,12 +300,12 @@ pub enum AcceptanceInfo {
 impl AcceptanceInfo {
     /// Creates an [`AcceptanceInfo`] from a [`Display`]able.
     pub fn identifier<D: Display>(id: D) -> Self {
-        AcceptanceInfo::Identifier(id.to_string())
+        Self::Identifier(id.to_string())
     }
 
     /// Creates an [`AcceptanceInfo`] from an [`Id`].
     pub fn integer(id: Id) -> Self {
-        AcceptanceInfo::Int(id)
+        Self::Int(id)
     }
 }
 

@@ -102,31 +102,31 @@ impl<A: Alphabet, W: Word<Symbol = A::Symbol>> SetSample<A, W> {
         }
     }
 
-    pub fn into_joined(self, other: SetSample<A, W>) -> SetSample<A, W> {
-        let SetSample {
+    pub fn into_joined(self, other: Self) -> Self {
+        let Self {
             alphabet,
             mut positive,
             mut negative,
         } = self;
         positive.extend(other.positive);
         negative.extend(other.negative);
-        SetSample {
+        Self {
             positive,
             negative,
             alphabet,
         }
     }
 
-    pub fn append(&mut self, other: SetSample<A, W>) {
+    pub fn append(&mut self, other: Self) {
         self.positive.extend(other.positive);
         self.negative.extend(other.negative);
     }
 
-    pub fn as_joined(&self, other: &SetSample<A, W>) -> SetSample<A, W>
+    pub fn as_joined(&self, other: &Self) -> Self
     where
         W: Clone,
     {
-        SetSample {
+        Self {
             alphabet: self.alphabet.clone(),
             positive: self
                 .positive

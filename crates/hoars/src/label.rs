@@ -31,8 +31,8 @@ pub(crate) enum Atomic {
 impl Atomic {
     pub(crate) fn to_value(&self, vars: &[BddVariable]) -> (BddVariable, bool) {
         match self {
-            Atomic::Positive(i) => (vars[*i as usize], true),
-            Atomic::Negative(i) => (vars[*i as usize], false),
+            Self::Positive(i) => (vars[*i as usize], true),
+            Self::Negative(i) => (vars[*i as usize], false),
         }
     }
 }
@@ -40,9 +40,9 @@ impl Atomic {
 impl AbstractLabelExpression {
     pub(crate) fn try_atom(&self) -> Option<Atomic> {
         match self {
-            AbstractLabelExpression::Integer(i) => Some(Atomic::Positive(*i)),
-            AbstractLabelExpression::Negated(bx) => match **bx {
-                AbstractLabelExpression::Integer(i) => Some(Atomic::Negative(i)),
+            Self::Integer(i) => Some(Atomic::Positive(*i)),
+            Self::Negated(bx) => match **bx {
+                Self::Integer(i) => Some(Atomic::Negative(i)),
                 _ => None,
             },
             _ => None,
@@ -60,19 +60,19 @@ impl AbstractLabelExpression {
 
     pub fn try_into_bdd(self, vs: &BddVariableSet, vars: &[BddVariable]) -> Result<Bdd, String> {
         match self {
-            AbstractLabelExpression::Boolean(b) => Ok(match b {
+            Self::Boolean(b) => Ok(match b {
                 true => vs.mk_true(),
                 false => vs.mk_false(),
             }),
-            AbstractLabelExpression::Integer(i) => {
+            Self::Integer(i) => {
                 if i < vs.num_vars() {
                     Ok(vs.mk_var(vars[i as usize]))
                 } else {
                     Err(format!("AP identifier {i} is too high"))
                 }
             }
-            AbstractLabelExpression::Negated(e) => Ok(e.try_into_bdd(vs, vars)?.not()),
-            AbstractLabelExpression::Conjunction(cs) => {
+            Self::Negated(e) => Ok(e.try_into_bdd(vs, vars)?.not()),
+            Self::Conjunction(cs) => {
                 if let Some(ints) = cs.iter().map(|c| c.try_atom()).collect::<Option<Vec<_>>>() {
                     let valuation = BddPartialValuation::from_values(
                         &ints.into_iter().map(|a| a.to_value(vars)).collect_vec(),
@@ -84,7 +84,7 @@ impl AbstractLabelExpression {
                     ))
                 }
             }
-            AbstractLabelExpression::Disjunction(ds) => {
+            Self::Disjunction(ds) => {
                 if let Some(ints) = ds.iter().map(|c| c.try_atom()).collect::<Option<Vec<_>>>() {
                     let valuation = BddPartialValuation::from_values(
                         &ints.into_iter().map(|a| a.to_value(vars)).collect_vec(),
@@ -127,8 +127,8 @@ pub enum LabelExpression {
 impl LabelExpression {
     pub fn try_into_hoa_expression(self, num_aps: u8) -> Result<HoaExpression, String> {
         match self {
-            LabelExpression::Expression(b) => Ok(b),
-            LabelExpression::Abstract(b) => b.try_into_prop(num_aps),
+            Self::Expression(b) => Ok(b),
+            Self::Abstract(b) => b.try_into_prop(num_aps),
         }
     }
 }
