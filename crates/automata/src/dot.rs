@@ -216,8 +216,7 @@ pub trait Dottable: TransitionSystem {
             .arg(tempfile_name)
             .spawn()?;
         if !child.wait()?.success() {
-            Err(std::io::Error::new(
-                std::io::ErrorKind::Other,
+            Err(std::io::Error::other(
                 child
                     .stdout
                     .map_or("Error in dot...".to_string(), |mut err| {
@@ -449,9 +448,9 @@ impl Display for DotStateAttribute {
             f,
             "{}",
             match self {
-                DotStateAttribute::Label(s) => format!("label=\"{}\"", s),
-                DotStateAttribute::Shape(s) => format!("shape=\"{}\"", s),
-                DotStateAttribute::Color(c) => format!("color=\"{}\"", c),
+                Self::Label(s) => format!("label=\"{}\"", s),
+                Self::Shape(s) => format!("shape=\"{}\"", s),
+                Self::Color(c) => format!("color=\"{}\"", c),
             }
         )
     }
@@ -465,7 +464,7 @@ pub enum DotTransitionAttribute {
 impl Display for DotTransitionAttribute {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            DotTransitionAttribute::Label(lbl) => write!(f, "label=\"{lbl}\""),
+            Self::Label(lbl) => write!(f, "label=\"{lbl}\""),
         }
     }
 }

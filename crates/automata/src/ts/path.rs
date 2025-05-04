@@ -133,7 +133,7 @@ impl<A: Alphabet, Idx: IndexType, Q: Clone, C: Clone> Path<A, Idx, Q, C> {
     }
 
     /// Extends self with the given `other` path.
-    pub fn extend_with(&mut self, other: Path<A, Idx, Q, C>) {
+    pub fn extend_with(&mut self, other: Self) {
         assert_eq!(self.reached(), other.origin(), "Start and end must match!");
         self.transitions.extend(other.transitions);
         self.state_colors
@@ -175,12 +175,12 @@ impl<A: Alphabet, Idx: IndexType, Q: Clone, C: Clone> Path<A, Idx, Q, C> {
         debug_assert!(self.end == self.transitions[position].0);
 
         Lasso::new(
-            Path::from_parts(
+            Self::from_parts(
                 self.transitions[position].0,
                 self.state_colors[..=position].to_vec(),
                 self.transitions[..position].to_vec(),
             ),
-            Path::from_parts(
+            Self::from_parts(
                 self.end,
                 self.state_colors[position..].to_vec(),
                 self.transitions[position..].to_vec(),

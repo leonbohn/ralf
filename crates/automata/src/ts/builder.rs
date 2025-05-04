@@ -37,7 +37,7 @@ pub struct TSBuilder<Q = Void, C = Void, const DET: bool = true> {
 impl<C, const DET: bool> TSBuilder<Void, C, DET> {
     /// Creates an empty instance of `Self`, where states are uncolored (have color [`Void`])
     pub fn without_state_colors() -> Self {
-        TSBuilder {
+        Self {
             symbols: OrderedSet::default(),
             edges: vec![],
             default: Some(Void),
@@ -48,7 +48,7 @@ impl<C, const DET: bool> TSBuilder<Void, C, DET> {
 impl<Q, const DET: bool> TSBuilder<Q, Void, DET> {
     /// Creates an empty instance of `Self`, where edges are uncolored (have color [`Void`])
     pub fn without_edge_colors() -> Self {
-        TSBuilder {
+        Self {
             symbols: OrderedSet::default(),
             edges: vec![],
             default: None,

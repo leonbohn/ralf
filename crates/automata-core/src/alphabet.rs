@@ -182,7 +182,7 @@ impl<S: Symbol> Iterator for FreeMonoid<S> {
         }
 
         if carry {
-            self.current = std::iter::repeat(0).take(self.current.len() + 1).collect();
+            self.current = std::iter::repeat_n(0, self.current.len() + 1).collect();
         }
 
         Some(out)

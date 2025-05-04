@@ -206,8 +206,8 @@ impl<S: Symbol> From<&PeriodicOmegaWord<S>> for ReducedOmegaWord<S> {
     }
 }
 
-impl<S: Symbol> From<&ReducedOmegaWord<S>> for ReducedOmegaWord<S> {
-    fn from(value: &ReducedOmegaWord<S>) -> Self {
+impl<S: Symbol> From<&Self> for ReducedOmegaWord<S> {
+    fn from(value: &Self) -> Self {
         Self::ultimately_periodic(value.spoke(), value.cycle())
     }
 }

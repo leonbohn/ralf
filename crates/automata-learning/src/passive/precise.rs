@@ -472,7 +472,7 @@ impl<A: Alphabet, const N: usize> From<FWPM<A>> for PreciseDPA<A, N> {
             start.elapsed().as_micros()
         );
 
-        PreciseDPA::new(leading, prc_dfas)
+        Self::new(leading, prc_dfas)
     }
 }
 

@@ -69,16 +69,16 @@ impl CharAlphabet {
     }
 }
 
-impl Matcher<char> for char {
-    fn matches(&self, expression: &char) -> bool {
+impl Matcher<Self> for char {
+    fn matches(&self, expression: &Self) -> bool {
         self == expression
     }
 }
 
 impl Expression for char {
-    type S = char;
+    type S = Self;
     type SymbolsIter<'this>
-        = std::iter::Once<char>
+        = std::iter::Once<Self>
     where
         Self: 'this;
     fn symbols(&self) -> Self::SymbolsIter<'_> {
@@ -88,11 +88,11 @@ impl Expression for char {
         self == other
     }
 
-    fn for_each<F: Fn(char)>(&self, f: F) {
+    fn for_each<F: Fn(Self)>(&self, f: F) {
         (f)(*self)
     }
 
-    fn matched_by(&self, symbol: char) -> bool {
+    fn matched_by(&self, symbol: Self) -> bool {
         self == &symbol
     }
 }
@@ -163,16 +163,16 @@ impl SimpleAlphabet for CharAlphabet {
 #[derive(Clone, Debug)]
 pub struct Fixed<S: Symbol, const N: usize>([S; N]);
 
-impl Matcher<usize> for usize {
-    fn matches(&self, expression: &usize) -> bool {
+impl Matcher<Self> for usize {
+    fn matches(&self, expression: &Self) -> bool {
         self == expression
     }
 }
 
 impl Expression for usize {
-    type S = usize;
+    type S = Self;
     type SymbolsIter<'this>
-        = std::iter::Once<usize>
+        = std::iter::Once<Self>
     where
         Self: 'this;
 
@@ -183,7 +183,7 @@ impl Expression for usize {
         self == other
     }
 
-    fn matched_by(&self, symbol: usize) -> bool {
+    fn matched_by(&self, symbol: Self) -> bool {
         *self == symbol
     }
 }
@@ -260,16 +260,16 @@ impl InvertibleChar {
     }
 }
 
-impl Matcher<InvertibleChar> for InvertibleChar {
-    fn matches(&self, expression: &InvertibleChar) -> bool {
+impl Matcher<Self> for InvertibleChar {
+    fn matches(&self, expression: &Self) -> bool {
         self == expression
     }
 }
 
 impl Expression for InvertibleChar {
-    type S = InvertibleChar;
+    type S = Self;
     type SymbolsIter<'this>
-        = std::iter::Once<InvertibleChar>
+        = std::iter::Once<Self>
     where
         Self: 'this;
 
@@ -280,7 +280,7 @@ impl Expression for InvertibleChar {
         self == other
     }
 
-    fn matched_by(&self, symbol: InvertibleChar) -> bool {
+    fn matched_by(&self, symbol: Self) -> bool {
         *self == symbol
     }
 }

@@ -121,7 +121,7 @@ where
     /// Build a new Cayley graph from the given transition system.
     pub fn new(ts: Ts) -> Self {
         let alphabet = Directional::from_iter(ts.alphabet().universe());
-        Cayley {
+        Self {
             expressions: alphabet.expression_map(),
             m: TransitionMonoid::new(ts),
             alphabet,

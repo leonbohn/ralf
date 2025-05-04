@@ -116,7 +116,7 @@ where
     pub fn new_with_initial_color(
         alphabet: A,
         initial_color: Q,
-    ) -> Automaton<A, Z, Q, C, D, OMEGA, DET>
+    ) -> Self
     where
         D: ForAlphabet<A> + Sproutable,
         Z: Default,
@@ -133,7 +133,7 @@ where
         alphabet: A,
         initial_color: Q,
         edge_color: C,
-    ) -> Automaton<A, Z, Q, C, D, OMEGA, DET>
+    ) -> Self
     where
         D: ForAlphabet<A> + Sproutable,
         Z: Default,
@@ -276,7 +276,7 @@ where
     }
 }
 
-impl<A, Z, Q, C, D, const OMEGA: bool> AsRef<Automaton<A, Z, Q, C, D, OMEGA>>
+impl<A, Z, Q, C, D, const OMEGA: bool> AsRef<Self>
     for Automaton<A, Z, Q, C, D, OMEGA>
 where
     A: Alphabet,
@@ -284,7 +284,7 @@ where
     Q: Color,
     C: Color,
 {
-    fn as_ref(&self) -> &Automaton<A, Z, Q, C, D, OMEGA> {
+    fn as_ref(&self) -> &Self {
         self
     }
 }

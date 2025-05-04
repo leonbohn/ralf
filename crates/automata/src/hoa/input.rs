@@ -19,7 +19,7 @@ pub struct IntoDeterministicHoaAutomatonStream<R> {
 }
 
 impl<R> IntoDeterministicHoaAutomatonStream<R> {
-    pub fn new(read: R) -> IntoDeterministicHoaAutomatonStream<R> {
+    pub fn new(read: R) -> Self {
         Self {
             base: HoaAutomatonStream::new(read),
         }
@@ -235,8 +235,8 @@ impl TryFrom<&hoars::Header> for OmegaAcceptanceCondition {
         });
 
         match value.acceptance_name() {
-            hoars::AcceptanceName::Buchi => Ok(OmegaAcceptanceCondition::Buchi),
-            hoars::AcceptanceName::Parity => Ok(OmegaAcceptanceCondition::Parity(
+            hoars::AcceptanceName::Buchi => Ok(Self::Buchi),
+            hoars::AcceptanceName::Parity => Ok(Self::Parity(
                 0,
                 acceptance_sets.unwrap() as Int,
             )),

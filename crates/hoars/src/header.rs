@@ -39,7 +39,7 @@ pub enum HeaderItem {
 
 impl HeaderItem {
     pub fn count_states(&self) -> Option<usize> {
-        if let HeaderItem::States(i) = self {
+        if let Self::States(i) = self {
             Some(*i as usize)
         } else {
             None
@@ -47,7 +47,7 @@ impl HeaderItem {
     }
 
     pub fn try_acceptance_name(&self) -> Option<(&AcceptanceName, &[AcceptanceInfo])> {
-        if let HeaderItem::AcceptanceName(x, y) = self {
+        if let Self::AcceptanceName(x, y) = self {
             Some((x, y))
         } else {
             None
@@ -55,7 +55,7 @@ impl HeaderItem {
     }
 
     pub fn count_acceptance_sets(&self) -> Option<usize> {
-        if let HeaderItem::Acceptance(n, _) = self {
+        if let Self::Acceptance(n, _) = self {
             Some(*n as usize)
         } else {
             None
@@ -66,7 +66,7 @@ impl HeaderItem {
 impl HeaderItem {
     /// Creates a new version 1 header item.
     pub fn v1() -> Self {
-        HeaderItem::Version("v1".to_string())
+        Self::Version("v1".to_string())
     }
 }
 
@@ -170,7 +170,7 @@ impl Header {
             .map(HeaderItem::Version);
         version
             .then(item().repeated())
-            .map(|(version, headers)| Header(std::iter::once(version).chain(headers).collect()))
+            .map(|(version, headers)| Self(std::iter::once(version).chain(headers).collect()))
     }
 
     /// Constructs a new header from a vector of header items.

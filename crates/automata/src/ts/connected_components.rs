@@ -224,7 +224,7 @@ impl<'a, Ts: TransitionSystem> SccDecomposition<'a, Ts> {
 
     /// Tests whether two SCC decompositions are isomorphic. This is done by checking whether each
     /// SCC in one decomposition has a matching SCC in the other decomposition.
-    pub fn equivalent(&self, other: &SccDecomposition<'a, Ts>) -> bool {
+    pub fn equivalent(&self, other: &Self) -> bool {
         for elem in self.dag.iter() {
             if !other.dag.iter().any(|other_elem| elem == other_elem) {
                 trace!("found no scc matching {elem:?} in other");

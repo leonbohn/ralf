@@ -282,10 +282,10 @@ impl<S: Symbol> FiniteWord for Vec<S> {
         self.iter().cloned()
     }
 
-    fn collect_vec(&self) -> Vec<S> {
+    fn collect_vec(&self) -> Self {
         self.clone()
     }
-    fn into_vec(self) -> Vec<S> {
+    fn into_vec(self) -> Self {
         self
     }
 

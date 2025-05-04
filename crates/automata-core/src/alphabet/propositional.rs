@@ -148,7 +148,7 @@ impl<RawTy: RawSymbolRepr> PropExpression<RawTy> {
             _ty: PhantomData,
         }
     }
-    pub fn new(num_aps: u8, string: &str) -> PropExpression<RawTy> {
+    pub fn new(num_aps: u8, string: &str) -> Self {
         let vars = BddVariableSet::new_anonymous(num_aps as u16);
         Self::from_parts(num_aps, vars.eval_expression_string(string))
     }
@@ -189,11 +189,11 @@ impl<RawTy: RawSymbolRepr> PropExpression<RawTy> {
 }
 
 impl<RawTy: RawSymbolRepr> std::ops::BitAnd for PropExpression<RawTy> {
-    type Output = PropExpression<RawTy>;
+    type Output = Self;
 
     fn bitand(self, rhs: Self) -> Self::Output {
         assert_eq!(self.num_aps, rhs.num_aps);
-        PropExpression {
+        Self {
             num_aps: self.num_aps,
             bdd: self.bdd.and(&rhs.bdd),
             _ty: PhantomData,
@@ -201,7 +201,7 @@ impl<RawTy: RawSymbolRepr> std::ops::BitAnd for PropExpression<RawTy> {
     }
 }
 impl<RawTy: RawSymbolRepr> std::ops::Not for PropExpression<RawTy> {
-    type Output = PropExpression<RawTy>;
+    type Output = Self;
 
     fn not(self) -> Self::Output {
         Self::from_parts(self.num_aps, self.bdd.not())
@@ -209,7 +209,7 @@ impl<RawTy: RawSymbolRepr> std::ops::Not for PropExpression<RawTy> {
 }
 
 impl<RawTy: RawSymbolRepr> std::ops::BitOr for PropExpression<RawTy> {
-    type Output = PropExpression<RawTy>;
+    type Output = Self;
     fn bitor(self, rhs: Self) -> Self::Output {
         assert_eq!(self.num_aps, rhs.num_aps);
         Self::from_parts(self.num_aps, self.bdd.or(&rhs.bdd))
@@ -285,8 +285,8 @@ impl<RawTy: RawSymbolRepr> Matcher<PropExpression<RawTy>> for PropSymbol<RawTy> 
     }
 }
 
-impl<RawTy: RawSymbolRepr> Matcher<PropExpression<RawTy>> for PropExpression<RawTy> {
-    fn matches(&self, expression: &PropExpression<RawTy>) -> bool {
+impl<RawTy: RawSymbolRepr> Matcher<Self> for PropExpression<RawTy> {
+    fn matches(&self, expression: &Self) -> bool {
         assert_eq!(self.num_aps, expression.num_aps);
         // all values in self should also be in expression
         // we share nothing with the complement of the expression

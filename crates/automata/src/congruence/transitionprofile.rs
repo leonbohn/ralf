@@ -91,14 +91,14 @@ impl Accumulates for Void {
     fn update(&mut self, _other: &Self) {}
 
     fn neutral() -> Self {
-        Void
+        Self
     }
 
     fn from_iter<'a, I: IntoIterator<Item = &'a Self>>(_iter: I) -> Self
     where
         Self: 'a,
     {
-        Void
+        Self
     }
 
     fn from(x: Self) -> Self {
@@ -116,14 +116,14 @@ impl Accumulates for usize {
     }
 
     fn neutral() -> Self {
-        usize::MAX
+        Self::MAX
     }
 
     fn from_iter<'a, I: IntoIterator<Item = &'a Self>>(iter: I) -> Self
     where
         Self: 'a,
     {
-        iter.into_iter().cloned().min().unwrap_or(usize::MAX)
+        iter.into_iter().cloned().min().unwrap_or(Self::MAX)
     }
 
     fn from(x: Self) -> Self {
@@ -366,12 +366,12 @@ where
         0..self.tps.len()
     }
 
-    fn build(ts: Ts) -> TransitionMonoid<Ts> {
+    fn build(ts: Ts) -> Self {
         let indices = ts.state_indices().collect();
         Self::build_for_states(ts, indices)
     }
 
-    fn build_for_states(ts: Ts, states: Vec<Ts::StateIndex>) -> TransitionMonoid<Ts> {
+    fn build_for_states(ts: Ts, states: Vec<Ts::StateIndex>) -> Self {
         let eps_profile = RunProfile::empty_for_states(states);
         let mut tps = vec![(eps_profile.clone(), 0)];
         let mut strings = vec![(vec![], ProfileEntry::Profile(0))];
@@ -405,7 +405,7 @@ where
             }
         }
 
-        TransitionMonoid { ts, tps, strings }
+        Self { ts, tps, strings }
     }
 }
 
